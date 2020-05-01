@@ -3,21 +3,11 @@ services:
   - docker
 
 before_install:
-  #Add network for bridge
-  - docker network create bnet
-  - docker build -t cloudurable/docker-bridge-nats -f cicd/Dockerfile_nats.dev .
-  - docker build -t cloudurable/docker-bridge-ibmmq -f cicd/Dockerfile_ibmmq.dev .
-  - docker build -t cloudurable/docker-bridge-artemis -f cicd/Dockerfile_artemismq.dev .
-  - docker build -t cloudurable/docker-gradle-bridge-build -f cicd/Dockerfile_bridge_travis.dev .
+  - docker-compose -f cicd/docker-compose-build.yml build
 
 script:
-  - docker run --net bnet --name nats-server -d cloudurable/docker-bridge-nats
-  - docker run --net bnet --name active-mq -d cloudurable/docker-bridge-artemis
-  - docker run --net bnet --name ibm-mq -d cloudurable/docker-bridge-ibmmq
-  - pwd
-  - ls
-  - docker run --net bnet --name bridge -v $(pwd):/usr/app cloudurable/docker-gradle-bridge-build
+  - docker-compose -f cicd/docker-compose-build.yml up
 
 after_script:
+  - docker-compose -f cicd/docker-compose-build.yml down
   - docker rm -f $(docker ps -aq)
-  - docker network remove bnet
