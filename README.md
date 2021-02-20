@@ -7,6 +7,9 @@ NATS MQ JMS Bridge.
 
 ![Build Status](https://api.travis-ci.org/nats-io/nats-jms-mq-bridge.svg "Build Status")
 
+## Alpha Release Notes
+
+Nats Bridge is releasing an Alpha JMS / IBM MQ bridge on May 1st, 2020.
 
 
 ## Early version
